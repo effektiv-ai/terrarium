@@ -1,3 +1,10 @@
+# [4.7.0-beta.2](https://github.com/austindimmer/terrarium/compare/v4.7.0-beta.1...v4.7.0-beta.2) (2025-07-24)
+
+
+### Bug Fixes
+
+* **ci:** fix ci workflow syntax ([5e65fbf](https://github.com/austindimmer/terrarium/commit/5e65fbfe2801732c22c6f02d481263c751dc8ee0))
+
 # [4.7.0-beta.1](https://github.com/austindimmer/terrarium/compare/v4.6.2...v4.7.0-beta.1) (2025-07-24)
 
 
