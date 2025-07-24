@@ -15,7 +15,9 @@
   },
   "release": {
     "branches": [
-      "master",
+      {
+        "name": "main"
+      },
       {
         "name": "develop",
         "channel": "beta",
