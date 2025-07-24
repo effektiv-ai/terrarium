@@ -2,7 +2,6 @@
   "name": "terrarium",
   "description": "Terrarium devcontainer repo",
   "version": "0.0.0-generated-by-semantic-release",
-  "repository": "https://github.com/effektiv-ai/terrarium",
   "license": "Apache-2.0",
   "scripts": {
     "semantic-release": "semantic-release",
