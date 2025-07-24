@@ -1,3 +1,10 @@
+# [4.7.0-beta.3](https://github.com/austindimmer/terrarium/compare/v4.7.0-beta.2...v4.7.0-beta.3) (2025-07-24)
+
+
+### Bug Fixes
+
+* **ci:** remove orchestrated ci workflow for now ([addf818](https://github.com/austindimmer/terrarium/commit/addf818312fc490a85e7d804c80e8b7527368600))
+
 # [4.7.0-beta.2](https://github.com/austindimmer/terrarium/compare/v4.7.0-beta.1...v4.7.0-beta.2) (2025-07-24)
 
 
