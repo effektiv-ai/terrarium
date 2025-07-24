@@ -1,0 +1,83 @@
+name: CI / CD
+
+on:
+  push:
+    branches: [develop, main] # build every commit
+  pull_request:
+    branches: [develop, main] # gate PRs
+  workflow_dispatch: {} # allow manual runs
+
+jobs:
+  ################################################################################
+  # 1 ────────── Build & unit‑test image (both arches) ───────────────────────────
+  ################################################################################
+  build:
+    strategy:
+      matrix: { arch: [linux/amd64, linux/arm64] }
+    runs-on: ${{ matrix.arch == 'linux/arm64' && 'ubuntu-22.04-arm' || 'ubuntu-latest' }}
+    permissions: { contents: read, packages: write }
+    outputs:
+      digest-${{ matrix.arch }}: ${{ steps.build.outputs.digest }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        if: github.event_name != 'pull_request'
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build + tests
+        id: build
+        uses: docker/build-push-action@v6
+        with:
+          context: ./terraform/docker
+          file: terraform/docker/Dockerfile.terrarium
+          platforms: ${{ matrix.arch }}
+          push: ${{ github.event_name != 'pull_request' }}
+          target: test
+          sbom: true
+          provenance: true
+
+  ################################################################################
+  # 2 ────────── Trivy scan – block on HIGH/CRITICAL ─────────────────────────────
+  ################################################################################
+  scan:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions: { contents: write, security-events: write }
+    steps:
+      - uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ghcr.io/${{ github.repository }}@${{ needs.build.outputs.digest-linux/amd64 }}
+          format: sarif
+          output: trivy-results.sarif
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: 1 # fail the job on findings
+
+      - name: Upload to “Security → Code scanning”
+        uses: github/codeql-action/upload-sarif@v3
+        with: { sarif_file: trivy-results.sarif }
+
+  ################################################################################
+  # 3 ────────── Semantic‑release (tags + GitHub Release) ────────────────────────
+  ################################################################################
+  release:
+    if: github.event_name == 'push' # never on PRs
+    needs: [build]
+    runs-on: ubuntu-latest
+    permissions: { contents: write, packages: write }
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }} # only needed if you ever publish
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: npm ci --ignore-scripts
+      - run: npx semantic-release

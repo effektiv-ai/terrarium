@@ -1,0 +1,72 @@
+{
+  "name": "terrarium",
+  "description": "Terrarium devcontainer repo",
+  "version": "0.0.0-generated-by-semantic-release",
+  "repository": "https://github.com/effektiv-ai/terrarium",
+  "license": "Apache-2.0",
+  "scripts": {
+    "semantic-release": "semantic-release",
+    "prepare": "husky install"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "release": {
+    "branches": [
+      "master",
+      {
+        "name": "develop",
+        "channel": "beta",
+        "prerelease": "beta"
+      }
+    ],
+    "preset": "angular",
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      [
+        "@semantic-release/npm",
+        {
+          "npmPublish": false,
+          "tarballDir": "dist"
+        }
+      ],
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "CHANGELOG.md",
+            "package.json"
+          ],
+          "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+        }
+      ],
+      [
+        "@semantic-release/github",
+        {
+          "assets": "dist/*.tgz"
+        }
+      ]
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint --edit $1"
+    }
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "husky": "^9.1.7",
+    "semantic-release": "^24.2.7",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^11.0.3",
+    "@semantic-release/npm": "^12.0.2",
+    "@semantic-release/release-notes-generator": "^14.0.3"
+  }
+}
