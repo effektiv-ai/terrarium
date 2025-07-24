@@ -1,0 +1,19 @@
+name: semantic-release
+on:
+  push:
+    branches: [main, develop]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # keep full history & tags
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci # or pnpm install
+      - env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release
