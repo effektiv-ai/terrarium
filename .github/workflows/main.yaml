@@ -90,6 +90,7 @@ jobs:
   ################################################################################
   build-arm64:
     name: Build & test (linux/arm64)
+    needs: get-version
     runs-on: ubuntu-22.04-arm
     if: github.event_name != 'push' || !startsWith(github.ref, 'refs/tags/v')
     permissions: { contents: read, packages: write }
