@@ -3,10 +3,10 @@ name: terrarium - build and test images
 
 on:
   push:
-    branches: [master, main]
-    tags: ["v*"] # ⇢ triggers manifest creation
+    branches: [master, main, develop]
+    tags: ["v*"]
   pull_request:
-    branches: [master, main]
+    branches: [master, main, develop]
   release:
     types: [released]
 
