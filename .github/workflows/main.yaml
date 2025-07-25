@@ -28,7 +28,10 @@ jobs:
       - uses: ./.github/actions/dump-context
       - uses: actions/setup-node@v4
         with: { node-version: 20 }
+
       - id: next
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           npm ci
           npx semantic-release --dry-run | tee sr.log
