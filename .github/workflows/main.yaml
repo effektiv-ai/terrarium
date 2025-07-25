@@ -30,12 +30,15 @@ jobs:
         with: { node-version: 20 }
 
       - id: next
+        name: Get next version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           npm ci
           npx semantic-release --dry-run | tee sr.log
-          echo "version=$(grep -oP 'next release version is \\K[^ ]+' sr.log)" >> "$GITHUB_OUTPUT"
+          version=$(grep -oP 'next release version is \K[^ ]+' sr.log)
+          echo "::notice title=Discovered-version::${version}"
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
 
   ################################################################################
   # Build & test (amd64)
@@ -53,6 +56,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - uses: ./.github/actions/dump-context
       - uses: docker/setup-buildx-action@v3
 
       - name: Docker metadata
@@ -105,7 +109,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
       - uses: ./.github/actions/dump-context
 
       - name: Docker metadata
@@ -153,11 +156,15 @@ jobs:
 
   manifest:
     needs: [get-version, build-amd64, build-arm64]
-    if: needs.get-version.outputs.next != ''
+    if: ${{ needs.get-version.outputs.next }}
     runs-on: ubuntu-latest
     permissions: { contents: read, packages: write }
 
     steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/dump-context
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
       - uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -171,8 +178,8 @@ jobs:
             ghcr.io/${{ github.repository }}:v${{ needs.get-version.outputs.next }}
             ghcr.io/${{ github.repository }}:latest
           sources: |
-            ghcr.io/${{ github.repository }}@${{ needs.build-amd64.outputs.digest }}
-            ghcr.io/${{ github.repository }}@${{ needs.build-arm64.outputs.digest }}
+            ghcr.io/${{ github.repository }}@${{ needs['build-amd64'].outputs.digest }}
+            ghcr.io/${{ github.repository }}@${{ needs['build-arm64'].outputs.digest }}
 
       - name: Semantic-release (real run)
         env:
