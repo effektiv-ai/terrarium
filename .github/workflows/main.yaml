@@ -154,7 +154,7 @@ jobs:
   # Create multi-arch manifest and run semantic-release
   ################################################################################
 
-  manifest:
+  release:
     needs: [get-version, build-amd64, build-arm64]
     if: ${{ needs.get-version.outputs.next }}
     runs-on: ubuntu-latest
