@@ -59,3 +59,4 @@ runs:
         echo "GITHUB_RUN_ID: ${{ github.run_id }}"
         echo "GITHUB_RUN_NUMBER: ${{ github.run_number }}"
         echo "GITHUB_SERVER_URL: ${{ github.server_url }}"
+        echo "GITHUB_OUTPUT: ${{ github.output }}"

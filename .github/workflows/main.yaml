@@ -184,4 +184,7 @@ jobs:
       - name: Semantic-release (real run)
         env:
           SEMREL_VERSION: v${{ needs.get-version.outputs.next }}
-        run: npx semantic-release
+        run: |
+          echo "Running semantic-release with version: $SEMREL_VERSION"
+          npm ci
+          npx semantic-release
