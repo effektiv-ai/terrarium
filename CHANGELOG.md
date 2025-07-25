@@ -1,3 +1,25 @@
+# [4.7.0-beta.4](https://github.com/austindimmer/terrarium/compare/v4.7.0-beta.3...v4.7.0-beta.4) (2025-07-25)
+
+
+### Bug Fixes
+
+* **ci:** added depends on needs for arm64 build ([e711e7e](https://github.com/austindimmer/terrarium/commit/e711e7eb419363c5b933c83b48293645a1595c62))
+* **ci:** added gh token to env for get-version job ([fe214a2](https://github.com/austindimmer/terrarium/commit/fe214a2006cccf4365f77bd85d9aeceb0e2e5902))
+* **ci:** ensure nom packages are installed for semantic release ([fcc0e27](https://github.com/austindimmer/terrarium/commit/fcc0e2763aa5fe3cb6c2958167d2b9a6ce1c5cd6))
+* **ci:** ensure npm packages are installed for semantic release ([a47e45a](https://github.com/austindimmer/terrarium/commit/a47e45ac4bc6bbd8d352ddc30578ece6ed7c34fb))
+* **ci:** make sure npm ci runs for release stage ([a93761f](https://github.com/austindimmer/terrarium/commit/a93761fed5b0d373b58d89c8f8c5286b5bd38f42))
+* **ci:** make sure npm ci runs for release stage ([79fc047](https://github.com/austindimmer/terrarium/commit/79fc0474f9c56e798c32b571aa57de86aa01de0a))
+* **ci:** make sure release has gh token in env ([94c79b1](https://github.com/austindimmer/terrarium/commit/94c79b11b3d06357d878f2e7caf1f547c2717b56))
+* **ci:** make sure triggered for dev branch ([335c18f](https://github.com/austindimmer/terrarium/commit/335c18f89514be8c8975fd02f9f705dd3c1c6557))
+* **ci:** refine permissions for release ([01974d0](https://github.com/austindimmer/terrarium/commit/01974d048d643dddb60cda219cc8dc81ff2ffa75))
+* **ci:** refine version output step ([b92af55](https://github.com/austindimmer/terrarium/commit/b92af55e1e09be9c0438f98002df5d195aeb7393))
+* **ci:** refine version variable setting and improve ci diagnostics ([d9f34ca](https://github.com/austindimmer/terrarium/commit/d9f34cae5d8b3fc381e3eb1b8d54327be91c6ca0))
+
+
+### Features
+
+* **ci:** unify workflows into automated build, test and release ([ac5a450](https://github.com/austindimmer/terrarium/commit/ac5a45088e94670e00856c823ba59b3f46fd3d9b))
+
 # [4.7.0-beta.3](https://github.com/austindimmer/terrarium/compare/v4.7.0-beta.2...v4.7.0-beta.3) (2025-07-24)
 
 
