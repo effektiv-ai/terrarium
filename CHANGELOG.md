@@ -1,3 +1,10 @@
+# [4.7.0-beta.5](https://github.com/austindimmer/terrarium/compare/v4.7.0-beta.4...v4.7.0-beta.5) (2025-07-25)
+
+
+### Bug Fixes
+
+* **ci:** refine permissions for release ([79a1978](https://github.com/austindimmer/terrarium/commit/79a1978c13e32a4cdc0d2255975f54abfb014dfb))
+
 # [4.7.0-beta.4](https://github.com/austindimmer/terrarium/compare/v4.7.0-beta.3...v4.7.0-beta.4) (2025-07-25)
 
 
