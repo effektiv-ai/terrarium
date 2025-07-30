@@ -1,5 +1,15 @@
 # **terrarium**
 
+## Audience
+
+External contributors & adopters
+
+## Purpose
+
+Immutable dev‑container image for IaC & Cloud Ops
+
+## Overview
+
 <table style="width: 100%; border-style: none;"><tr>
 <td style="width: 140px; text-align: center;"> <img width="128px" src="docs/images/terrarium.png" alt="terrarium logo"/></a></td>
 <td>
@@ -13,6 +23,43 @@ With **terrarium** we offer an immutable Developer Environment for developers wo
 By using the Visual Studio Code Remote - Containers extension it enables the developer to open cloud component repositories inside a container and take advantage of Visual Studio Code's full feature set.
 
 This repository contains an example container definition to help get you up and running with **terrarium**. The definition describes the appropriate container image and VS Code extensions that should be installed. A container configuration file (devcontainer.json) and other needed files that you can drop into any existing folder as a starting point for containerizing your project.
+
+## Process Flow
+
+```mermaid
+flowchart TD
+  %% ──────────── Legend ────────────
+  subgraph Legend[Key]
+    direction LR
+    l1([Implemented & Working]):::ok
+    l2([Future Enhancement]):::future
+    l3([Failing / Broken]):::fail
+  end
+
+  %% ──────────── Workflow ────────────
+  GH[(GitHub<br/>Developer Push / PR)]:::ok
+
+  GH --> B1[Build Multi‑Arch Image]:::ok
+  B1 --> S1[Cosign Image Sign]:::future
+  B1 --> T1[Test Image]:::ok
+  T1 --> SCAN[Security Scans]:::fail
+
+  %% SBOM path
+  B1 --> SBOM1[Syft SBOM]:::future
+  SBOM1 --> SBOM2[Cosign SBOM<br/>Attestation]:::future
+
+  %% Scan gate
+  SCAN -->|QA Pass| PUSH[Push to GHCR]:::ok
+  SCAN -->|QA Fail| BLOCK1[Block / Raise Issues]:::ok
+
+  %% Post‑push steps
+  PUSH --> SEC_UPLOAD[Upload SBOM +<br/>Scan results to GitHub Security]:::ok
+
+  %% ──────────── Styles ────────────
+  classDef ok fill:#c5ecc5,color:#000,stroke:#2e7d32,stroke-width:1px;
+  classDef future fill:#fff4c2,color:#000,stroke:#f4b400,stroke-width:1px;
+  classDef fail fill:#f6c7c7,color:#000,stroke:#c62828,stroke-width:1px;
+```
 
 ## Usage
 
