@@ -21,6 +21,7 @@ concurrency:
 jobs:
   get-version:
     runs-on: ubuntu-latest
+    permissions: { contents: read, packages: read }
     outputs:
       next: ${{ steps.next.outputs.version }}
     steps:
