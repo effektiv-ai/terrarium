@@ -1,7 +1,3 @@
-**/node_modules/**
-**/dist/**
-**/.env
-
 repomix-output.xml
 .ruby-version
 # ignore all vendor folders in root and subdirectories

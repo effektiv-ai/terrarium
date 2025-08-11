@@ -355,16 +355,6 @@ RUN git clone --depth 1 --branch v1.11.0 https://github.com/bats-core/bats-core.
     && bats --version
 COPY tests /home/terrarium/tests
 
-# Install test dependencies to allow for testing of output image
-# --- add latest bats-core (one small layer, ~1 MiB) ---
-RUN git clone --depth 1 --branch v1.11.0 \
-    https://github.com/bats-core/bats-core.git /opt/bats-core \
-    && /opt/bats-core/install.sh /usr/local \
-    && bats --version
-COPY tests /home/terrarium/tests
-
-
-
 WORKDIR $HOME
 CMD ["/bin/bash", "-i", "-l"]
 

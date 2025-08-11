@@ -41,11 +41,12 @@ jobs:
           images: ghcr.io/${{ github.repository_owner }}/terrarium
           flavor: latest=auto,suffix=-linux-amd64
           tags: |
-            # ── use the semantic-release version when present ─────────────
-            type=raw,value=v${{ env.RELEASE_VERSION }}-linux-amd64,enable=${{ env.RELEASE_VERSION != '' }}
-            # ── normal ref/sha/PR tags (as before) ────────────────────────
+            type=schedule
             type=ref,event=branch
             type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
             type=sha
             type=raw,value=latest,enable={{is_default_branch}}
 
