@@ -1,3 +1,9 @@
+repomix-output.xml
+.ruby-version
+# ignore all vendor folders in root and subdirectories
+*vendor/*
+terraform/docker/vendor/*
+
 **/node_modules/**
 **/dist/**
 **/.env
