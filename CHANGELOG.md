@@ -1,3 +1,19 @@
+# [4.7.0-beta.7](https://github.com/austindimmer/terrarium/compare/v4.7.0-beta.6...v4.7.0-beta.7) (2025-08-13)
+
+
+### Bug Fixes
+
+* **ci:** add workflow trigger for build images ([c9ef7e6](https://github.com/austindimmer/terrarium/commit/c9ef7e6928f231ef254cd5a072f0b9a573a44392))
+* **ci:** enable write permissions to allow update semantic release ([46e5fc1](https://github.com/austindimmer/terrarium/commit/46e5fc1d79209990e5b95e1dfebc28179f69fc62))
+* **ci:** fix scan workflow ([fee0d60](https://github.com/austindimmer/terrarium/commit/fee0d60bc6f29be11f253f3bda4f03599965d1bb))
+* **ci:** fix syntax ([95d094a](https://github.com/austindimmer/terrarium/commit/95d094ac3f4478ed1b76837154007a66dc05b51c))
+* **ci:** fix wf ([e6a668b](https://github.com/austindimmer/terrarium/commit/e6a668b0ac23f558939f440f8e48f254d5cd9442))
+* **ci:** give write permissions to gh workflow ([9b21f6b](https://github.com/austindimmer/terrarium/commit/9b21f6bf60a4eb0742c22a937058b2beac768300))
+* **ci:** refine conditions ([025da3c](https://github.com/austindimmer/terrarium/commit/025da3cc1e2b1d7e7848bddd4c1d1b55c40655e4))
+* **ci:** refine permissions ([b914d3b](https://github.com/austindimmer/terrarium/commit/b914d3b90d17e8fd2f5cb56bac27e7f5355119d0))
+* **ci:** refine permissions for get version ([5c4fc49](https://github.com/austindimmer/terrarium/commit/5c4fc49aa436bbb531451df1501959ebd83cc0c9))
+* **ci:** try relax trigger conditions ([4b6be59](https://github.com/austindimmer/terrarium/commit/4b6be590f458d3789caf0432ea6e359b73531b98))
+* **ci:** try this ([1400e17](https://github.com/austindimmer/terrarium/commit/1400e1778fe0a3e74355be7353cbc8c03bba0150))
 
 # [4.7.0-beta.6](https://github.com/austindimmer/terrarium/compare/v4.7.0-beta.5...v4.7.0-beta.6) (2025-08-13)
 # [4.7.0](https://github.com/effektiv-ai/terrarium/compare/v4.6.2...v4.7.0) (2025-07-30)
