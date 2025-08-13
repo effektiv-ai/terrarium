@@ -7,6 +7,7 @@ ARG BUNDLER_VERSION_DEPRECATED=2.4.22
 ARG GEM_HOME=/opt/bundle
 ARG BATS_CORE_VERSION=1.11.0
 
+
 # ================= Stage 0 — buildlang (compile on Rocky 9) =================
 FROM rockylinux:9 AS buildlang
 ARG PYTHON_VERSION RUBY_VERSION RUBY_VERSION_DEPRECATED BUNDLER_VERSION BUNDLER_VERSION_DEPRECATED GEM_HOME
@@ -62,6 +63,7 @@ RUN RBENV_VERSION=${RUBY_VERSION} bundle config set --global path ${GEM_HOME} \
 # ================= Stage 1 — builder (UBI 9) =================
 FROM registry.access.redhat.com/ubi9/ubi:latest AS builder
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 
 LABEL maintainer="Erhard Wais <erhard.wais@boehringer-ingelheim.com>, Josef Hartmann <josef.hartmann@boehringer-ingelheim.com>"
 
@@ -177,6 +179,7 @@ RUN /sbin/ldconfig || /usr/sbin/ldconfig || true
 
 # ─── uv – ultra‑fast dependency manager & Python launcher ───────────────────
 RUN fetch https://astral.sh/uv/install.sh | bash && uv --version
+
 
 # Configure PIP SSL validation (pyenv’s pip)
 RUN pip config set global.cert /etc/ssl/certs/ca-bundle.crt \
@@ -302,6 +305,7 @@ RUN ARCH=$([[ "$TARGETARCH" == "amd64" ]] && echo "amd64" || echo "arm64") \
     && chmod +x /usr/local/bin/tfsec \
     && tfsec --version
 
+
 # sops + age
 RUN TARGETARCH_SYNONYM_SHORT2=$([[ "$TARGETARCH" == "amd64" ]] && echo "amd64" || echo "arm64") \
     && TARGETARCH_SYNONYM_SHORT3=$([[ "$TARGETARCH" == "amd64" ]] && echo "x86_64" || echo "aarch64") \
@@ -390,8 +394,6 @@ RUN git clone --depth 1 --branch v1.11.0 \
     && /opt/bats-core/install.sh /usr/local \
     && bats --version
 COPY tests /home/terrarium/tests
-
-
 
 WORKDIR $HOME
 CMD ["/bin/bash", "-i", "-l"]

@@ -53,3 +53,4 @@ HCL
   run jq -e 'has("results")' "$report"
   assert_success
 }
+
