@@ -1,3 +1,26 @@
+# [4.7.0-beta.6](https://github.com/austindimmer/terrarium/compare/v4.7.0-beta.5...v4.7.0-beta.6) (2025-08-13)
+
+
+### Bug Fixes
+
+* **docker:** terrarium now builds with all tools updated and rhel9 ([f70f75a](https://github.com/austindimmer/terrarium/commit/f70f75aea052a1fc6b647dafe9c3b6d492ec94b7))
+* **docker:** try fix intermittent build failure due to bats install, update changelog ([c1c2739](https://github.com/austindimmer/terrarium/commit/c1c2739ff88856cb1509f8e6a496856e6f395431))
+* **docs:** updated security.md ([7d7c76d](https://github.com/austindimmer/terrarium/commit/7d7c76d9099d196b25f0eb03e4ae750762cf9724))
+* **docs:** updated security.md ([2b61b79](https://github.com/austindimmer/terrarium/commit/2b61b792d8c5b75a96252ddd93de1b689f04dff2))
+* **git:** updated gitignore ([9d0aec6](https://github.com/austindimmer/terrarium/commit/9d0aec606fadf05af9e2acd45497b3d4b4583712))
+* **git:** updated gitignore ([8603186](https://github.com/austindimmer/terrarium/commit/8603186f510c1be3d7985b503622be9700bfc3c4))
+* **git:** updated gitignore ([7f23d83](https://github.com/austindimmer/terrarium/commit/7f23d83c3742c7b67be8852988df7552589aa51e))
+* **security:** improved build determinacy and security posture - almost working ([5ec15b7](https://github.com/austindimmer/terrarium/commit/5ec15b76737fa5d7d402486058f6e02956034621))
+
+
+### Features
+
+* **ci:** add Bats test‑suite for basic successful tool installation checks ([#40](https://github.com/austindimmer/terrarium/issues/40)) ([27a4d43](https://github.com/austindimmer/terrarium/commit/27a4d4350364c7ff4e4174d49946ab67176005c6))
+* **docker:** harden network fetches, enable pipefail to try and make build more robust ([b9dc14f](https://github.com/austindimmer/terrarium/commit/b9dc14f206400e9ab3302bab7c40df6e4ac82606))
+* **python:** pyenv and uv are now installed ([97450a7](https://github.com/austindimmer/terrarium/commit/97450a74b41058ca2039668de956354fb9ae3f04))
+* **python:** pyenv and uv are now installed ([#41](https://github.com/austindimmer/terrarium/issues/41)) ([5177c8e](https://github.com/austindimmer/terrarium/commit/5177c8e672d1db80c1e202e7dadabd1f491e0d40))
+* **tools:** added tfsec with bats tests ([bc546be](https://github.com/austindimmer/terrarium/commit/bc546befbdc75a5dda032b41e9e464e344b4ac6a))
+
 # [4.7.0-beta.5](https://github.com/austindimmer/terrarium/compare/v4.7.0-beta.4...v4.7.0-beta.5) (2025-07-25)
 
 
