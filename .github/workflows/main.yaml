@@ -48,6 +48,7 @@ jobs:
   # ----------------------------- Build & test (amd64)
   build-amd64:
     name: Build & test (linux/amd64)
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.head_ref != 'develop')
     needs: get-version
     runs-on: ubuntu-latest
     permissions: { contents: read, packages: write }
@@ -98,6 +99,7 @@ jobs:
   # ----------------------------- Build & test (arm64)
   build-arm64:
     name: Build & test (linux/arm64)
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.head_ref != 'develop')
     needs: get-version
     runs-on: ubuntu-22.04-arm
     permissions: { contents: read, packages: write }
