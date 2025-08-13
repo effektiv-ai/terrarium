@@ -2,7 +2,7 @@ name: Scan terrarium image using trivy
 
 on:
   push:
-    branches: [main, development]    # (Check: your build workflow uses "develop")
+    branches: [main, develop]
   workflow_dispatch:
   schedule:
     - cron: "0 13 * * *"
