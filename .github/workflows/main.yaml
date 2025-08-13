@@ -22,17 +22,24 @@ jobs:
     outputs:
       next: ${{ steps.next.outputs.version }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/dump-context
-      - uses: actions/setup-node@v4
-        with: { node-version: 20 }
-      - id: next
-        name: Get next version
-        env: { GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} }
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Dump context
+        uses: ./.github/actions/dump-context
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Get next version
+        id: next
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -o pipefail
           npm ci
-          # Don't fail PRs – semantic-release exits 1 in PR context
           npx semantic-release --dry-run --ci false | tee sr.log || true
           version=$(grep -Eo 'next release version is [^ ]+' sr.log | awk '{print $NF}' || true)
           echo "::notice title=Discovered-version::${version}"
