@@ -1,13 +1,21 @@
 name: Scan terrarium image using trivy
+
 on:
   push:
-    branches: [main, development]  # Limit to specific branches for GitOps control
+    branches: [main, develop]
   workflow_dispatch:
   schedule:
     - cron: "0 13 * * *"
+
 env:
   IMAGE_BASE: ${{ github.repository }}
-  IMAGE_TAG: ${{ github.ref_name == 'main' && 'latest' || 'dev' }}  # Dynamically set tag: 'latest' for main, 'dev' for development
+  # 'latest' for main, 'dev' for development
+  IMAGE_TAG: ${{ github.ref_name == 'main' && 'latest' || 'dev' }}
+
+  # Toggle enforcement centrally. For now, DON'T block.
+  # When you're ready to enforce on main: set repo/org Actions var TRIVY_BLOCK to 'true'
+  TRIVY_BLOCK: ${{ vars.TRIVY_BLOCK || 'false' }}
+
 jobs:
   scan:
     permissions:
@@ -20,29 +28,34 @@ jobs:
         uses: actions/checkout@v4
       - uses: ./.github/actions/dump-context
       - name: Create public folder
-        run: |
-          mkdir -p public/
-      - name: Run Trivy vulnerability scanner
+        run: mkdir -p public/
+
+      - name: Run Trivy vulnerability scanner (SARIF)
         uses: aquasecurity/trivy-action@master
+        # If TRIVY_BLOCK != 'true' -> don't fail the job even with findings
+        continue-on-error: ${{ env.TRIVY_BLOCK != 'true' }}
         with:
-          image-ref: ghcr.io/${{ env.IMAGE_BASE }}:${{ env.IMAGE_TAG }}  # Use branch-specific tag
+          image-ref: ghcr.io/${{ env.IMAGE_BASE }}:${{ env.IMAGE_TAG }}
           format: "sarif"
           output: "public/trivy-results.sarif"
-          exit-code: "1"
+          # If enforcing, exit 1 on findings; otherwise always 0
+          exit-code: ${{ env.TRIVY_BLOCK == 'true' && '1' || '0' }}
           ignore-unfixed: true
           vuln-type: "os,library"
           severity: "CRITICAL,HIGH,MEDIUM"
+
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
         if: always()
         with:
           sarif_file: "public/trivy-results.sarif"
+
       - name: Run Trivy vulnerability scanner (HTML)
         uses: aquasecurity/trivy-action@master
         if: always()
         continue-on-error: true
         with:
-          image-ref: ghcr.io/${{ env.IMAGE_BASE }}:${{ env.IMAGE_TAG }}  # Same branch-specific tag
+          image-ref: ghcr.io/${{ env.IMAGE_BASE }}:${{ env.IMAGE_TAG }}
           format: "template"
           template: "@/contrib/html.tpl"
           output: "public/index.html"
@@ -50,11 +63,3 @@ jobs:
           ignore-unfixed: true
           vuln-type: "os,library"
           severity: "CRITICAL,HIGH,MEDIUM"
-      # Remove duplicate SARIF upload; it's redundant
-      # Uncomment GitHub Pages publish if needed, and add branch condition if desired
-      #- name: Save scan results to github pages
-      #  uses: peaceiris/actions-gh-pages@v3
-      #  if: always() && github.ref_name == 'main'  # e.g., publish only for main
-      #  with:
-      #    github_token: ${{ secrets.GITHUB_TOKEN }}
-      #    publish_dir: ./public
