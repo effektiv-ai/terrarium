@@ -1,8 +1,18 @@
+
+# [4.7.0-beta.6](https://github.com/austindimmer/terrarium/compare/v4.7.0-beta.5...v4.7.0-beta.6) (2025-08-13)
 # [4.7.0](https://github.com/effektiv-ai/terrarium/compare/v4.6.2...v4.7.0) (2025-07-30)
 
 
 ### Bug Fixes
 
+* **docker:** terrarium now builds with all tools updated and rhel9 ([f70f75a](https://github.com/austindimmer/terrarium/commit/f70f75aea052a1fc6b647dafe9c3b6d492ec94b7))
+* **docker:** try fix intermittent build failure due to bats install, update changelog ([c1c2739](https://github.com/austindimmer/terrarium/commit/c1c2739ff88856cb1509f8e6a496856e6f395431))
+* **docs:** updated security.md ([7d7c76d](https://github.com/austindimmer/terrarium/commit/7d7c76d9099d196b25f0eb03e4ae750762cf9724))
+* **docs:** updated security.md ([2b61b79](https://github.com/austindimmer/terrarium/commit/2b61b792d8c5b75a96252ddd93de1b689f04dff2))
+* **git:** updated gitignore ([9d0aec6](https://github.com/austindimmer/terrarium/commit/9d0aec606fadf05af9e2acd45497b3d4b4583712))
+* **git:** updated gitignore ([8603186](https://github.com/austindimmer/terrarium/commit/8603186f510c1be3d7985b503622be9700bfc3c4))
+* **git:** updated gitignore ([7f23d83](https://github.com/austindimmer/terrarium/commit/7f23d83c3742c7b67be8852988df7552589aa51e))
+* **security:** improved build determinacy and security posture - almost working ([5ec15b7](https://github.com/austindimmer/terrarium/commit/5ec15b76737fa5d7d402486058f6e02956034621))
 * **ci:** added depends on needs for arm64 build ([e711e7e](https://github.com/effektiv-ai/terrarium/commit/e711e7eb419363c5b933c83b48293645a1595c62))
 * **ci:** added gh token to env for get-version job ([fe214a2](https://github.com/effektiv-ai/terrarium/commit/fe214a2006cccf4365f77bd85d9aeceb0e2e5902))
 * **ci:** enable write permissions to allow update semantic release ([46e5fc1](https://github.com/effektiv-ai/terrarium/commit/46e5fc1d79209990e5b95e1dfebc28179f69fc62))
@@ -30,6 +40,11 @@
 
 ### Features
 
+* **ci:** add Bats test‑suite for basic successful tool installation checks ([#40](https://github.com/austindimmer/terrarium/issues/40)) ([27a4d43](https://github.com/austindimmer/terrarium/commit/27a4d4350364c7ff4e4174d49946ab67176005c6))
+* **docker:** harden network fetches, enable pipefail to try and make build more robust ([b9dc14f](https://github.com/austindimmer/terrarium/commit/b9dc14f206400e9ab3302bab7c40df6e4ac82606))
+* **python:** pyenv and uv are now installed ([97450a7](https://github.com/austindimmer/terrarium/commit/97450a74b41058ca2039668de956354fb9ae3f04))
+* **python:** pyenv and uv are now installed ([#41](https://github.com/austindimmer/terrarium/issues/41)) ([5177c8e](https://github.com/austindimmer/terrarium/commit/5177c8e672d1db80c1e202e7dadabd1f491e0d40))
+* **tools:** added tfsec with bats tests ([bc546be](https://github.com/austindimmer/terrarium/commit/bc546befbdc75a5dda032b41e9e464e344b4ac6a))
 * **ci:** add semantic release gh workflow test ([b9ffccc](https://github.com/effektiv-ai/terrarium/commit/b9ffccce271ab4f33d75f73cb73c3f99c19df49c))
 * **ci:** initial semantic release integration ([c946b9d](https://github.com/effektiv-ai/terrarium/commit/c946b9d472131cfff5159dde4f618330ddea7c47))
 * **ci:** unify workflows into automated build, test and release ([ac5a450](https://github.com/effektiv-ai/terrarium/commit/ac5a45088e94670e00856c823ba59b3f46fd3d9b))
@@ -96,7 +111,49 @@
 
 # Changelog
 
-20241018 Update Tools:
+## 2025-08-08 PR #41 — feat(python): pyenv and uv are now installed (merged 2025‑08‑08)
+
+### Added
+
+- `uv` preinstalled for fast, deterministic Python workflows.
+- `pyenv` to build and select CPython; patch‑exact pin via `PYTHON_VERSION` (default `3.12.11`).
+- New Bats test `tests/10_python.bats` to verify `python`, `pyenv`, and `uv`.
+
+### Changed
+
+- `Dockerfile.terrarium` now produces Python via `pyenv` and puts pyenv shims first in `PATH`.
+- Extra compile deps added to ensure a full‑featured CPython build (e.g. `bzip2‑devel`, `xz‑devel`, `tk‑devel`, etc.).
+- Moved the basic Python existence check out of `00_core.bats` (covered by `10_python.bats`).
+
+### Removed
+
+- Reliance on system RPMs (`python3.12*`) baked into the image.
+
+---
+
+## 2025-07-29 PR #40 — feat(ci): add Bats test‑suite for basic successful tool installation checks (merged 2025‑07‑28)
+
+### Added
+
+- Comprehensive Bats smoke/regression suite under `terraform/docker/tests/`:
+  - `00_core.bats`, `20_infra.bats`, `30_aws.bats`, `40_terraform.bats`, `50_ruby_ecosystem.bats`, `60_k8s.bats`, `90_extras.bats`.
+- Test helper libraries vendored (`bats-support`, `bats-assert`) plus `tests/test_helper/common.bash`.
+- New multi‑stage `Dockerfile.terrarium` **test** target that runs the suite and emits a JUnit report at build time.
+- CI updated so builds target the **test** stage across all matrix architectures; failures block image publishing.
+
+### Changed
+
+- CI/workflows refinements (e.g., ARM runner selection, manifest creation, checkout v4) and improved tagging/diagnostics.
+- README updated to describe the Bats testing approach.
+
+### Dependencies
+
+- Bumped `rexml` (indirect) to `3.3.9`.
+
+---
+
+## 2024-10-18 Update Tools:
+
 - ruby 3.3.4
 - bundler
 - inspec and cinc-auditor-bin
@@ -110,7 +167,10 @@
 - update python requirements
 - update base OS
 
-20230428 Update Tools:
+---
+
+## 2023-04-28 Update Tools:
+
 - ruby 3.2.2
 - bundler
 - kitchen-terraform
@@ -118,7 +178,9 @@
 - hashicorp tools
 - nodejs
 - default python version is 3.11
-- python requirements 
-- added tflint 
+- python requirements
+- added tflint
 
-20220315 Initial release.
+---
+
+## 2022-03-15 Initial release.
