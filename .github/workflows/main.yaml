@@ -9,6 +9,7 @@ on:
     branches: [master, main, develop]
   release:
     types: [released]
+  workflow_dispatch:
 
 env:
   IMAGE_BASE: ${{ github.repository }}
