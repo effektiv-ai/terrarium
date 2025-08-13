@@ -22,6 +22,32 @@ concurrency:
 # 1 ────────── Build & test AMD64 image ────────────────────────────────────────
 ################################################################################
 jobs:
+  get-version:
+    runs-on: ubuntu-latest
+    outputs:
+      next: ${{ steps.next.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/dump-context
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+
+      - id: next
+        name: Get next version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -o pipefail
+          npm ci
+          # Don't fail PRs – semantic-release exits 1 in PR context
+          npx semantic-release --dry-run --ci false | tee sr.log || true
+          version=$(grep -Eo 'next release version is [^ ]+' sr.log | awk '{print $NF}' || true)
+          echo "::notice title=Discovered-version::${version}"
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+
+  ################################################################################
+  # Build & test (amd64)
+  ################################################################################
   build-amd64:
     name: Build & test (linux/amd64)
     runs-on: ubuntu-latest
