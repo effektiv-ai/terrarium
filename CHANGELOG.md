@@ -1,3 +1,10 @@
+# [4.7.0-develop.2](https://github.com/austindimmer/terrarium/compare/v4.7.0-develop.1...v4.7.0-develop.2) (2025-08-14)
+
+
+### Bug Fixes
+
+* **ci:** refined semantic release config ([23f0793](https://github.com/austindimmer/terrarium/commit/23f0793f036b35a75c03a932ada01aae777be8ce))
+
 # [4.7.0-develop.1](https://github.com/austindimmer/terrarium/compare/v4.6.2...v4.7.0-develop.1) (2025-08-14)
 
 
