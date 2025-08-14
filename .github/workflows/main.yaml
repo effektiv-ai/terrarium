@@ -26,6 +26,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # full history
+          fetch-tags: true # ensure all tags are present
 
       - name: Dump context
         uses: ./.github/actions/dump-context
