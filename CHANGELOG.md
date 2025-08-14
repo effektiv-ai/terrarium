@@ -1,3 +1,10 @@
+# [4.7.0-beta.9](https://github.com/austindimmer/terrarium/compare/v4.7.0-beta.8...v4.7.0-beta.9) (2025-08-14)
+
+
+### Bug Fixes
+
+* **ci:** fix clone depth for sematic release versioning ([8251c91](https://github.com/austindimmer/terrarium/commit/8251c91626fd2bf2be15fec64d11a2efc09deb73))
+
 # [4.7.0-beta.8](https://github.com/austindimmer/terrarium/compare/v4.7.0-beta.7...v4.7.0-beta.8) (2025-08-14)
 # [4.7.0](https://github.com/austindimmer/terrarium/compare/v4.6.2...v4.7.0) (2025-08-13)
 
