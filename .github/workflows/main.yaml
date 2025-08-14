@@ -45,7 +45,7 @@ jobs:
         run: |
           set -o pipefail
           npm ci
-          npx semantic-release --dry-run --ci false | tee sr.log || true
+          npx semantic-release --dry-run --no-ci | tee sr.log || true
           version=$(grep -Eo 'next release version is [^ ]+' sr.log | awk '{print $NF}' || true)
           echo "::notice title=Discovered-version::${version}"
           echo "version=${version}" >> "$GITHUB_OUTPUT"
