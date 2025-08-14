@@ -1,5 +1,7 @@
 name: terrarium - build and test images
 
+# ci: trigger 1
+
 on:
   push:
     branches: [master, main, develop]
@@ -24,6 +26,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # full history
+          fetch-tags: true # ensure all tags are present
 
       - name: Dump context
         uses: ./.github/actions/dump-context
@@ -40,7 +45,7 @@ jobs:
         run: |
           set -o pipefail
           npm ci
-          npx semantic-release --dry-run --ci false | tee sr.log || true
+          npx semantic-release --dry-run --no-ci | tee sr.log || true
           version=$(grep -Eo 'next release version is [^ ]+' sr.log | awk '{print $NF}' || true)
           echo "::notice title=Discovered-version::${version}"
           echo "version=${version}" >> "$GITHUB_OUTPUT"
@@ -187,9 +192,12 @@ jobs:
     permissions: { contents: write, packages: write, pull-requests: write }
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # full history
+          fetch-tags: true # ensure all tags are present
       - uses: ./.github/actions/dump-context
       - uses: actions/setup-node@v4
-        with: { node-version: 20 }
+        with: { node-version: 24 }
       - uses: docker/login-action@v3
         with:
           registry: ghcr.io
