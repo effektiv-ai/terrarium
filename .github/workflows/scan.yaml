@@ -1,4 +1,4 @@
-name: Scan terrarium image using trivy
+name: scan terrarium image using trivy
 
 on:
   push:
@@ -9,46 +9,57 @@ on:
 
 env:
   IMAGE_BASE: ${{ github.repository }}
-  # 'latest' for main, 'dev' for development
-  IMAGE_TAG: ${{ github.ref_name == 'main' && 'latest' || 'dev' }}
+  # Use the actual branch tag the build workflow pushes (e.g. :main, :develop).
+  # On scheduled runs, ref_name is empty, so default to 'main'.
+  IMAGE_TAG: ${{ github.ref_name || 'main' }}
 
-  # Toggle enforcement centrally. For now, DON'T block.
-  # When you're ready to enforce on main: set repo/org Actions var TRIVY_BLOCK to 'true'
+  # Toggle enforcement centrally. Keep non-blocking for now.
   TRIVY_BLOCK: ${{ vars.TRIVY_BLOCK || 'false' }}
 
 jobs:
   scan:
+    name: Scan for Security Vulnerabilities
+    runs-on: ubuntu-22.04
     permissions:
       contents: write
       security-events: write
-    name: Scan for Security Vulnerabilities
-    runs-on: ubuntu-22.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
       - uses: ./.github/actions/dump-context
+
       - name: Create public folder
         run: mkdir -p public/
 
       - name: Run Trivy vulnerability scanner (SARIF)
+        id: trivy_sarif
         uses: aquasecurity/trivy-action@master
-        # If TRIVY_BLOCK != 'true' -> don't fail the job even with findings
+        # If TRIVY_BLOCK != 'true', don't fail the job on findings or pull errors
         continue-on-error: ${{ env.TRIVY_BLOCK != 'true' }}
         with:
           image-ref: ghcr.io/${{ env.IMAGE_BASE }}:${{ env.IMAGE_TAG }}
-          format: "sarif"
-          output: "public/trivy-results.sarif"
-          # If enforcing, exit 1 on findings; otherwise always 0
+          format: sarif
+          output: public/trivy-results.sarif
           exit-code: ${{ env.TRIVY_BLOCK == 'true' && '1' || '0' }}
           ignore-unfixed: true
-          vuln-type: "os,library"
-          severity: "CRITICAL,HIGH,MEDIUM"
+          vuln-type: os,library
+          severity: CRITICAL,HIGH,MEDIUM
 
+      # Only try to upload if the SARIF file exists and the trivy step succeeded
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
-        if: always()
+        if: ${{ steps.trivy_sarif.outcome == 'success' && hashFiles('public/trivy-results.sarif') != '' }}
         with:
-          sarif_file: "public/trivy-results.sarif"
+          sarif_file: public/trivy-results.sarif
+
+      # Helpful diagnostics when the image/tag wasn't found (no SARIF produced)
+      - name: Explain missing SARIF (non-blocking)
+        if: ${{ steps.trivy_sarif.outcome != 'success' || hashFiles('public/trivy-results.sarif') == '' }}
+        run: |
+          echo "::warning title=Trivy::No SARIF produced. The image tag may not exist yet."
+          echo "Tried: ghcr.io/${{ env.IMAGE_BASE }}:${{ env.IMAGE_TAG }}"
+          echo "Make sure your build workflow pushes branch tags (type=ref,event=branch)."
 
       - name: Run Trivy vulnerability scanner (HTML)
         uses: aquasecurity/trivy-action@master
@@ -56,10 +67,10 @@ jobs:
         continue-on-error: true
         with:
           image-ref: ghcr.io/${{ env.IMAGE_BASE }}:${{ env.IMAGE_TAG }}
-          format: "template"
+          format: template
           template: "@/contrib/html.tpl"
-          output: "public/index.html"
+          output: public/index.html
           exit-code: "0"
           ignore-unfixed: true
-          vuln-type: "os,library"
-          severity: "CRITICAL,HIGH,MEDIUM"
+          vuln-type: os,library
+          severity: CRITICAL,HIGH,MEDIUM
