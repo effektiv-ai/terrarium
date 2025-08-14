@@ -203,3 +203,35 @@ load 'test_helper/common.bash'
 
 Commit & push – the GitHub Action will tell you whether the test
 (or the image!) needs changes.
+
+## Branching & Release Strategy
+
+This repository uses semantic-release to fully automate version management and changelog generation.
+Releases are determined only by commit messages following the Conventional Commits specification.
+
+### Branch Roles
+
+| Branch         | Release Type          | Version Pattern | Notes                                                                                                      |
+| -------------- | --------------------- | --------------- | ---------------------------------------------------------------------------------------------------------- |
+| `main`         | **Stable**            | `x.y.z`         | Production-ready releases. Published to the default (`latest`) channel.                                    |
+| `develop`      | **Prerelease (beta)** | `x.y.z-beta.N`  | Used for integration testing. Published to the `beta` channel.                                             |
+| `feature/*`    | No release            | —               | For development only. Builds/test snapshots may be pushed for PRs, but no semantic-release publish occurs. |
+| Other branches | No release            | —               | Treated like feature branches unless explicitly added to the `.releaserc` configuration.                   |
+
+### How Versions Are Determined
+
+- Stable releases: Created from main when commits contain fix, feat, or a breaking change (BREAKING CHANGE: in body or ! in header).
+
+- Beta prereleases: Created from develop with the next planned main version and a -beta.N suffix.
+
+- Feature branches: No semantic-release run; CI may still build and publish branch-specific artifacts (e.g., Docker images for PR review).
+
+Key Points
+
+- Never commit directly to main – all changes should flow through develop → main.
+
+- Do not merge develop into main unless you intend to trigger a stable release.
+
+- Do not expect feature branches to produce installable npm/GitHub releases – they’re for development only.
+
+- Semantic-release determines the next version by looking at the latest tag on the target branch and all commits since that tag.

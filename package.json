@@ -19,8 +19,26 @@
       },
       {
         "name": "develop",
+        "prerelease": true
+      },
+      {
+        "name": "next",
+        "channel": "next",
+        "prerelease": "rc"
+      },
+      {
+        "name": "beta",
         "channel": "beta",
         "prerelease": "beta"
+      },
+      {
+        "name": "alpha",
+        "channel": "alpha",
+        "prerelease": "alpha"
+      },
+      {
+        "name": "maintenance",
+        "range": "+([0-9])?(.{+([0-9]),x}).x"
       }
     ],
     "preset": "angular",
