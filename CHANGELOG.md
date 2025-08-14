@@ -1,3 +1,15 @@
+# [4.7.0-beta.8](https://github.com/austindimmer/terrarium/compare/v4.7.0-beta.7...v4.7.0-beta.8) (2025-08-14)
+
+
+### Bug Fixes
+
+* **ci:** try manual version bump to fix releases ([aadcf3c](https://github.com/austindimmer/terrarium/commit/aadcf3c95af3e7594bd0576467b1a7f9c0e0db34))
+
+
+### Features
+
+* **ci:** version bump ([41d377f](https://github.com/austindimmer/terrarium/commit/41d377f3f7759ce24789cc3f0cc47b6243091baa))
+
 # [4.7.0-beta.7](https://github.com/austindimmer/terrarium/compare/v4.7.0-beta.6...v4.7.0-beta.7) (2025-08-13)
 
 
